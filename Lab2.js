@@ -7,7 +7,8 @@ var innerHeight = outerHeight -margin.top -margin.bottom;
 var paddingPercentage = .05;
 
 var currentYTitle = "";
-var xColumnName = "BLocLong";
+var currentXTitle = "";
+var xColumnName = "";
 var yColumnName = "";
 var selectedTeam = "All";
 function getGlobalTitle(){
@@ -60,7 +61,8 @@ var yAxis = d3.svg.axis().scale(scaleY).orient("left");
 
 xAxisG.append("text")
 .style("text-anchor","middle")
-.text("Year")
+.text(currentXTitle)
+.attr("id", "xAxisTitle")
 .attr("transform","translate("+(innerWidth/2)+","+(50)+")");
 
 yAxisG.append("text")
@@ -80,13 +82,7 @@ var teamRects = g.append("g")
 function dataReady(data){
     
     teamData = data;
-    
-    //setup x axis
-    var xExtent = d3.extent(data,function(d){return d[xColumnName]});
-    var xRange = xExtent[1]-xExtent[0];
-    scaleX.domain([xExtent[0] - (xRange * paddingPercentage), xExtent[1] + (xRange * paddingPercentage)]);
-    xAxisG.call(xAxis);
-    
+
     //setup team rectangles
     var teamRect = teamRects.selectAll("g")
         .data(d3.map(data,function(d){return d.teamID;}).keys())
@@ -143,12 +139,22 @@ function dataReady(data){
 
 function renderBatAvg(){
     var data = teamData;
+    xColumnName = "BLocLong";
     yColumnName = "Batting Average";
     currentYTitle = "Batting Average";
+    currentXTitle = "Longitude";
+    
     
     transitionGlobalTitle(2000);
     transitionYAxisTitle(2000);
     
+    //setup x axis
+    var xExtent = d3.extent(data,function(d){return d[xColumnName]});
+    var xRange = xExtent[1]-xExtent[0];
+    scaleX.domain([xExtent[0] - (xRange * paddingPercentage), xExtent[1] + (xRange * paddingPercentage)]);
+    xAxisG.call(xAxis);
+    
+    //setup y axis
     var yExtent = d3.extent(data, function(d){return d.BLocLat});
     var yRange = yExtent[1]-yExtent[0];
     scaleY.domain([yExtent[0] - (yRange * paddingPercentage), yExtent[1] + (yRange * paddingPercentage)]);
@@ -210,6 +216,16 @@ function transitionYAxisTitle(totalDuration){
         .transition()
         .duration(totalDuration/2)
         .text(currentYTitle)
+        .style("font-size","18px");
+}
+function transitionXAxisTitle(totalDuration){
+        d3.select("#xAxisTitle")
+        .transition()
+        .duration(totalDuration/2)
+        .style("font-size","1px")
+        .transition()
+        .duration(totalDuration/2)
+        .text(currentXTitle)
         .style("font-size","18px");
 }
 function transitionGlobalTitle(totalDuration){
