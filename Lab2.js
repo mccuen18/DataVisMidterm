@@ -7,7 +7,7 @@ var innerHeight = outerHeight -margin.top -margin.bottom;
 var paddingPercentage = .05;
 
 var currentYTitle = "";
-var xColumnName = "yearID";
+var xColumnName = "BLocLong";
 var yColumnName = "";
 var selectedTeam = "All";
 function getGlobalTitle(){
@@ -25,7 +25,7 @@ function getGlobalTitle(){
 
 var teamData;
 
-d3.csv("teams.csv",convert,dataReady);
+d3.csv("SchichDataS1_FB.csv",convert,dataReady);
 
 
 
@@ -79,7 +79,6 @@ var teamRects = g.append("g")
 
 function dataReady(data){
     
-    data = data.filter(function(d){return d[xColumnName] > 1999});
     teamData = data;
     
     //setup x axis
@@ -114,7 +113,7 @@ function dataReady(data){
     .append("circle");
     
     //add stlye
-    circles.attr("r", 5)
+    circles.attr("r", 2)
     .attr("fill", function(d){
     if(d.WSWin == "Y"){
         return "red";
@@ -150,12 +149,12 @@ function renderBatAvg(){
     transitionGlobalTitle(2000);
     transitionYAxisTitle(2000);
     
-    var yExtent = d3.extent(data, function(d){return d.H/d.AB});
+    var yExtent = d3.extent(data, function(d){return d.BLocLat});
     var yRange = yExtent[1]-yExtent[0];
     scaleY.domain([yExtent[0] - (yRange * paddingPercentage), yExtent[1] + (yRange * paddingPercentage)]);
     yAxisG.call(yAxis);
     
-    circles.transition().duration(2000).attr("cy", function(d) {return scaleY(d.H/d.AB)});
+    circles.transition().duration(2000).attr("cy", function(d) {return scaleY(d.BLocLat)});
 }
 function renderHomeFieldAttendance(){
     var data = teamData;
@@ -255,13 +254,20 @@ function mouseExitFunc(){
 function convert(d){
     d.ER = +d.ER; //converts ER to int value
     d.yearID = +d.yearID;
-    d.AB = +d.AB;
-    d.H = +d.H;
+    d.BLocLong = +d.BLocLong;
+    d.BLocLat = +d.BLocLat;
     d.GHome = +d.GHome;
     d.attendance = +d.attendance;
     d.G = +d.G;
     d.W = +d.W;
     d.L = +d.L;
+    d.BYear = +d.BYear;
+    d.PerformingArts= +d.PerformingArts;
+    d.Creative= +d.Creative;
+    d.GovLawMilActRel = +d.GovLawMilActRel;
+    d.AcademicEduHealth = +d.AcademicEduHealth;
+    d.Sports = +d.Sports;
+    d.BusinessIndustryTravel= +d.BusinessIndustryTravel;
     return d;
 }
 
