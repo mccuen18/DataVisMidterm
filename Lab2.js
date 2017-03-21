@@ -1,5 +1,5 @@
 //Author: Cam McCuen
-var margin = {left: 150, right:100, top:50, bottom:50};
+var margin = {left: 150, right:100, top:50, bottom:100};
 var outerWidth = 1200;
 var outerHeight = 900;
 var innerWidth = outerWidth -margin.left -margin.right;
@@ -10,9 +10,9 @@ var currentYTitle = "";
 var currentXTitle = "";
 var xColumnName = "";
 var yColumnName = "";
-var selectedTeam = "All";
+var selectedGroup = "All";
 function getGlobalTitle(){
-    return currentYTitle+" From 2000-2015, " + selectedTeam+" is Selected";
+    return currentYTitle+" vs "+currentXTitle+", " + selectedGroup+" is Selected";
 }
 
 //"teamID" string
@@ -30,12 +30,11 @@ d3.csv("SchichDataS1_FB.csv",convert,dataReady);
 
 
 
-
 //Create SVG element
 var svg = d3.select("body")
     .append("svg")
     .attr("width", outerWidth)
-    .attr("height", outerHeight);
+    .attr("height", outerHeight)
 
 
 var g = svg.append("g")
@@ -82,7 +81,7 @@ var teamRects = g.append("g")
 function dataReady(data){
     
     teamData = data;
-
+    /*
     //setup team rectangles
     var teamRect = teamRects.selectAll("g")
         .data(d3.map(data,function(d){return d.teamID;}).keys())
@@ -101,6 +100,8 @@ function dataReady(data){
     teamRect.append("text")
         .text(function(d){return d})
         .attr("transform","translate(10,15)");
+    
+    */
     
     //create circles for datapoints
     circles = g.selectAll("circle")
@@ -128,24 +129,23 @@ function dataReady(data){
     circles.on('mouseover', mouseEnterFunc)
         .on('mouseout', mouseExitFunc);
     
-    circles.attr("cx", function(d) {return scaleX(d[xColumnName])});
     
-    renderBatAvg();
-    //renderWins();
-    //renderHomeFieldAttendance();
+    
+    renderLatLong();
 }
 
 
 
-function renderBatAvg(){
+function renderLatLong(){
     var data = teamData;
     xColumnName = "BLocLong";
-    yColumnName = "Batting Average";
-    currentYTitle = "Batting Average";
-    currentXTitle = "Longitude";
+    yColumnName = "BLocLat";
     
+    currentXTitle = "Longitude";
+    currentYTitle = "Latitude";
     
     transitionGlobalTitle(2000);
+    transitionXAxisTitle(2000);
     transitionYAxisTitle(2000);
     
     //setup x axis
@@ -155,14 +155,15 @@ function renderBatAvg(){
     xAxisG.call(xAxis);
     
     //setup y axis
-    var yExtent = d3.extent(data, function(d){return d.BLocLat});
+    var yExtent = d3.extent(data, function(d){return d[yColumnName]});
     var yRange = yExtent[1]-yExtent[0];
     scaleY.domain([yExtent[0] - (yRange * paddingPercentage), yExtent[1] + (yRange * paddingPercentage)]);
     yAxisG.call(yAxis);
     
-    circles.transition().duration(2000).attr("cy", function(d) {return scaleY(d.BLocLat)});
+    circles.attr("cx", function(d) {return scaleX(d[xColumnName])});
+    circles.transition().duration(2000).attr("cy", function(d) {return scaleY(d[yColumnName])});
 }
-function renderHomeFieldAttendance(){
+function renderDeathShareVTime(){
     var data = teamData;
     yColumnName = "attendance";
     currentYTitle = "Home Field Attendance";
@@ -176,21 +177,6 @@ function renderHomeFieldAttendance(){
     yAxisG.call(yAxis);
     
     circles.transition().duration(2000).attr("cy", function(d) {return scaleY(d[yColumnName])});
-}
-function renderWins(){
-    var data = teamData;
-    yColumnName = "W";
-    currentYTitle = "Win Percentage";
-
-    transitionGlobalTitle(2000);
-    transitionYAxisTitle(2000);
-        
-    var yExtent = d3.extent(data, function(d){return d.W/d.G});
-    var yRange = yExtent[1]-yExtent[0];
-    scaleY.domain([yExtent[0] - (yRange * paddingPercentage), yExtent[1] + (yRange * paddingPercentage)]);
-    yAxisG.call(yAxis);
-    
-    circles.transition().duration(2000).attr("cy", function(d) {return scaleY(d.W/d.G)});
 }
 
 function renderER(){
@@ -208,6 +194,7 @@ function renderER(){
     
     circles.transition().duration(2000).attr("cy", function(d) {return scaleY(d[yColumnName])});
 }
+
 function transitionYAxisTitle(totalDuration){
         d3.select("#yAxisTitle")
         .transition()
@@ -256,14 +243,14 @@ function mouseEnterFunc(){
             return .3;
         }
     })
-    selectedTeam = d3.select(this).attr("class");
+    selectedGroup = d3.select(this).attr("class");
     debugOut(getGlobalTitle);
 }
 function mouseExitFunc(){
     var team = d3.select(this).attr("class");
     d3.selectAll("."+team).attr("r", 5);
     d3.selectAll("circle").transition().style("opacity", 1);
-    selectedTeam = "All";
+    selectedGroup = "All";
     debugOut(getGlobalTitle);
 }
 
