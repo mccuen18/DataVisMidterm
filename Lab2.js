@@ -462,6 +462,8 @@ function renderBirthAmountVTime(){
     .enter()
     .append("circle");
     maleCircles.attr("r", 5)
+    .on('mouseover', mouseEnterFunc)
+    .on('mouseout', mouseExitFunc)
     .attr("fill", function(d){
         if(d.gender == "male"){
             return "blue";
