@@ -73,10 +73,6 @@ y.domain([yExtent[0] - (yRange * .05), yExtent[1] + (yRange * .05)]);
 
 
 
-
-
-
-
 //cross fade text
 <h1>0</h1>
 <script src="//d3js.org/d3.v4.0.0-alpha.23.min.js"></script>

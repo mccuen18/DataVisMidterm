@@ -81,6 +81,8 @@ var teamRects = g.append("g")
 function dataReady(data){
     
     teamData = data;
+    console.log(data.length);
+    console.log(data);
     /*
     //setup team rectangles
     var teamRect = teamRects.selectAll("g")
@@ -163,7 +165,7 @@ function renderDeathShareVTime(){
     
     currentXTitle = "Century";
     currentYTitle = "Death Share";
-    
+    /*
     data = data.filter(function(d){return (d.DYear >= 0)&&(d.DLocLabel == "Florence" ||
                                                           d.DLocLabel == "Rome" ||
                                                           d.DLocLabel == "Paris" ||
@@ -178,21 +180,37 @@ function renderDeathShareVTime(){
                                                           d.DLocLabel == "Nuremberg"
                                                          );}
                       );
+    */
+    /*
+        data = data.filter(function(d){return (d.DLocLabel == "Florence" ||
+                                                          d.DLocLabel == "Rome" ||
+                                                          d.DLocLabel == "Paris" ||
+                                                          d.DLocLabel == "Los Angeles" ||
+                                                          d.DLocLabel == "New York City" ||
+                                                          d.DLocLabel == "London" ||
+                                                          d.DLocLabel == "Moscow" ||
+                                                          d.DLocLabel == "Berlin" ||
+                                                          d.DLocLabel == "Munich" ||
+                                                          d.DLocLabel == "Vienna" ||
+                                                          d.DLocLabel == "Amsterdam" ||
+                                                          d.DLocLabel == "Nuremberg"
+                                                         );}
+                      );
     
-    
-    
+    */
     var totalDeaths = d3.nest()
     .key(function(d){return d.DLocLabel;})
     .rollup(function(v){ return {
-       13: d3.sum(v, function(d){return (d.DYear >= 0 && d.DYear <= 1300);}),
-        14: d3.sum(v, function(d){return (d.DYear > 1300 && d.DYear <= 1400);}),
-        15: d3.sum(v, function(d){return (d.DYear > 1400 && d.DYear <= 1500);}),
-        16: d3.sum(v, function(d){return (d.DYear > 1500 && d.DYear <= 1600);}),
-        17: d3.sum(v, function(d){return (d.DYear > 1600 && d.DYear <= 1700);}),
-        18: d3.sum(v, function(d){return (d.DYear > 1700 && d.DYear <= 1800);}),
-        19: d3.sum(v, function(d){return (d.DYear > 1800 && d.DYear <= 1900);}),
-        20: d3.sum(v, function(d){return (d.DYear > 1900 && d.DYear <= 2000);}),
-        21: d3.sum(v, function(d){return (d.DYear > 2000 && d.DYear <= 2012);})
+        count: v.length,
+       13: d3.sum(v, function(d){return (d.DYear >= 0 && d.DYear <= 1300)}),
+        14: d3.sum(v, function(d){return (d.DYear > 1300 && d.DYear <= 1400)}),
+        15: d3.sum(v, function(d){return (d.DYear > 1400 && d.DYear <= 1500)}),
+        16: d3.sum(v, function(d){return (d.DYear > 1500 && d.DYear <= 1600)}),
+        17: d3.sum(v, function(d){return (d.DYear > 1600 && d.DYear <= 1700)}),
+        18: d3.sum(v, function(d){return (d.DYear > 1700 && d.DYear <= 1800)}),
+        19: d3.sum(v, function(d){return (d.DYear > 1800 && d.DYear <= 1900)}),
+        20: d3.sum(v, function(d){return (d.DYear > 1900 && d.DYear <= 2000)}),
+        21: d3.sum(v, function(d){return (d.DYear > 2000 && d.DYear <= 2012)})
         
     }; })
     .entries(data);
@@ -329,15 +347,8 @@ function mouseExitFunc(){
 
 
 function convert(d){
-    d.ER = +d.ER; //converts ER to int value
-    d.yearID = +d.yearID;
     d.BLocLong = +d.BLocLong;
     d.BLocLat = +d.BLocLat;
-    d.GHome = +d.GHome;
-    d.attendance = +d.attendance;
-    d.G = +d.G;
-    d.W = +d.W;
-    d.L = +d.L;
     d.BYear = +d.BYear;
     d.DYear = +d.DYear;
     d.PerformingArts= +d.PerformingArts;
