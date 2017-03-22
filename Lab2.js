@@ -232,25 +232,6 @@ function renderDeathShareVTime(){
                                                           d.DLocLabel == "Nuremberg"
                                                          );}
                       );
-//<<<<<<< HEAD
-    
-    /*
-        data = data.filter(function(d){return (d.DLocLabel == "Florence" ||
-                                                          d.DLocLabel == "Rome" ||
-                                                          d.DLocLabel == "Paris" ||
-                                                          d.DLocLabel == "Los Angeles" ||
-                                                          d.DLocLabel == "New York City" ||
-                                                          d.DLocLabel == "London" ||
-                                                          d.DLocLabel == "Moscow" ||
-                                                          d.DLocLabel == "Berlin" ||
-                                                          d.DLocLabel == "Munich" ||
-                                                          d.DLocLabel == "Vienna" ||
-                                                          d.DLocLabel == "Amsterdam" ||
-                                                          d.DLocLabel == "Nuremberg"
-                                                         );}
-                      );
-=======
->>>>>>> origin/master
     
     var totalDeaths = d3.nest()
     .key(function(d){return d.DLocLabel;})
@@ -363,6 +344,7 @@ function renderDeathShareVTime(){
     
     transitionGlobalTitle(2000);
     transitionYAxisTitle(2000);
+    transitionXAxisTitle(2000);
     
     circles.attr("cx", function(d) {return scaleX(d[xColumnName])});
     circles.transition().duration(2000).attr("cy", function(d) {return scaleY(d[yColumnName])});
@@ -393,6 +375,8 @@ function renderBirthAmountVTime(){
 
     transitionGlobalTitle(2000);
     transitionYAxisTitle(2000);
+    transitionXAxisTitle(2000);
+    
     var maleBirthArray = [];
     maleBirthArray[0] = data.filter(function(d){return (d.BYear >= 0) && (d.BYear <= 1300) && (d.Gender == "Male")});
     maleBirthArray[1] = data.filter(function(d){return (d.BYear > 1300) && (d.BYear <= 1400) && (d.Gender == "Male")});
