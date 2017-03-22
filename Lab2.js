@@ -1,5 +1,5 @@
 //Author: Cam McCuen
-var margin = {left: 150, right:100, top:50, bottom:100};
+var margin = {left: 150, right:160, top:50, bottom:100};
 var outerWidth = 1200;
 var outerHeight = 900;
 var innerWidth = outerWidth -margin.left -margin.right;
@@ -73,7 +73,7 @@ yAxisG.append("text")
 
 var circles;
 
-var barWidth = 50;
+var barWidth = 120;
 var barHeight = 50;
 var groupRects = g.append("g")
         .attr("transform", "translate("+(innerWidth+50)+","+(-50)+")");
@@ -249,8 +249,27 @@ function renderDeathShareVTime(){
     }; })
     .entries(data);
    
-    var flatDeaths = [];
-    console.log(totalDeaths[0].values);
+    
+    data = totalDeaths;
+    
+    var groupRect = groupRects.selectAll("g")
+        .data(d3.map(data,function(d){return d.key;}).keys())
+        .enter().append("g")
+        .attr("transform",function(d,i){return "translate(0,"+i*barHeight/2+")"})
+        .attr("class",function(d){console.log(d);return d})
+        .on('mouseover', mouseEnterFunc)
+        .on('mouseout', mouseExitFunc);
+    
+    groupRect.append("rect")
+        .attr("width", barWidth)
+        .attr("height", 20)
+        .attr("fill","lightblue");
+    groupRect.append("title")
+        .text(function(d){return d});
+    groupRect.append("text")
+        .text(function(d){return d})
+        .attr("transform","translate(10,15)");
+    
     /*
     for(var i = 0; i < 12; i++){
         flatDeaths.push(
@@ -267,7 +286,7 @@ function renderDeathShareVTime(){
     }
     
     */
-    
+    var flatDeaths = [];
     for(var i = 0; i < 12; i++){
 
         for(var j=13; j < 22;j++){
@@ -349,13 +368,12 @@ function renderDeathShareVTime(){
     circles.attr("cx", function(d) {return scaleX(d[xColumnName])});
     circles.transition().duration(2000).attr("cy", function(d) {return scaleY(d[yColumnName])});
     
-    /*
+    
     data = totalDeaths.values;
     // begin of drawing lines
 var line = d3.svg.line()
-    .x(function(d){return x(d[0]);})
-    .y(function(d){return y(d[1]);})
-    .interpolate("linear");  
+    .x(function(d){console.log(d[0]);return scaleX(d[0]);})
+    .y(function(d){return scaleY(d[1]);});
 
 g.append("path")
     .attr("d", function(d) { return line(data)})
@@ -364,7 +382,7 @@ g.append("path")
         .style("stroke", "steelblue")
         .style("fill", "none");
 // end of drawing lines
-*/
+
 }
 
 function renderBirthAmountVTime(){
