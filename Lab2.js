@@ -1,4 +1,4 @@
-//Author: Cam McCuen
+//Authors: Cam McCuen, Clinton Yoos, Parth Thaker
 var margin = {left: 150, right:100, top:50, bottom:100};
 var outerWidth = 1200;
 var outerHeight = 900;
