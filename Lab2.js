@@ -496,7 +496,9 @@ function renderBirthAmountVTime(){
             return "deeppink";
         }
         return "slategray";
-    });
+    })  .attr("class", function(d){return d.gender})
+        .on('mouseover', mouseEnterFunc)
+        .on('mouseout', mouseExitFunc);
         //setup x axis
     var xExtent = d3.extent(maleBirthArray,function(d){return d.century});
     var xRange = xExtent[1]-xExtent[0];
