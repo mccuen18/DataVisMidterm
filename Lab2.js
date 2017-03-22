@@ -169,7 +169,6 @@ function renderLatLong(){
         obj.max = locationMap[keys[i]][3];
         keys2[i] = obj;
     }
-    console.log(keys2[0]);
     var circles = g.selectAll("circle")
     .data(keys2)
     .enter()
@@ -233,6 +232,25 @@ function renderDeathShareVTime(){
                                                           d.DLocLabel == "Nuremberg"
                                                          );}
                       );
+//<<<<<<< HEAD
+    
+    /*
+        data = data.filter(function(d){return (d.DLocLabel == "Florence" ||
+                                                          d.DLocLabel == "Rome" ||
+                                                          d.DLocLabel == "Paris" ||
+                                                          d.DLocLabel == "Los Angeles" ||
+                                                          d.DLocLabel == "New York City" ||
+                                                          d.DLocLabel == "London" ||
+                                                          d.DLocLabel == "Moscow" ||
+                                                          d.DLocLabel == "Berlin" ||
+                                                          d.DLocLabel == "Munich" ||
+                                                          d.DLocLabel == "Vienna" ||
+                                                          d.DLocLabel == "Amsterdam" ||
+                                                          d.DLocLabel == "Nuremberg"
+                                                         );}
+                      );
+=======
+>>>>>>> origin/master
     
     var totalDeaths = d3.nest()
     .key(function(d){return d.DLocLabel;})
@@ -367,20 +385,100 @@ g.append("path")
 */
 }
 
-function renderER(){
+function renderBirthAmountVTime(){
     var data = teamData;
     yColumnName = "ER";
-    currentYTitle = "Earned Runs";
-    
+    currentYTitle = "# of Births";
+    currentXTitle = "Century";
+
     transitionGlobalTitle(2000);
     transitionYAxisTitle(2000);
+    var maleBirthArray = [];
+    maleBirthArray[0] = data.filter(function(d){return (d.BYear >= 0) && (d.BYear <= 1300) && (d.Gender == "Male")});
+    maleBirthArray[1] = data.filter(function(d){return (d.BYear > 1300) && (d.BYear <= 1400) && (d.Gender == "Male")});
+    maleBirthArray[2] = data.filter(function(d){return (d.BYear > 1400) && (d.BYear <= 1500) && (d.Gender == "Male")});
+    maleBirthArray[3] = data.filter(function(d){return (d.BYear > 1500) && (d.BYear <= 1600) && (d.Gender == "Male")});
+    maleBirthArray[4] = data.filter(function(d){return (d.BYear > 1600) && (d.BYear <= 1700) && (d.Gender == "Male")});
+    maleBirthArray[5] = data.filter(function(d){return (d.BYear > 1700) && (d.BYear <= 1800) && (d.Gender == "Male")});
+    maleBirthArray[6] = data.filter(function(d){return (d.BYear > 1800) && (d.BYear <= 1900) && (d.Gender == "Male")});
+    maleBirthArray[7] = data.filter(function(d){return (d.BYear > 1900) && (d.BYear <= 2000) && (d.Gender == "Male")});
+    maleBirthArray[8] = data.filter(function(d){return (d.BYear > 2000) && (d.Gender == "Male")});
+    for(var i = 0; i < maleBirthArray.length; i++){
+        var obj = new Object();
+        obj.century = i+13;
+        obj.births = maleBirthArray[i].length;
+        obj.gender = "male";
+        maleBirthArray[i] = obj;
+    }
     
-    var yExtent = d3.extent(data, function(d){return d[yColumnName]});
+    var femaleBirthArray = [];
+    femaleBirthArray[0] = data.filter(function(d){return (d.BYear >= 0) && (d.BYear <= 1300) && (d.Gender == "Female")});
+    femaleBirthArray[1] = data.filter(function(d){return (d.BYear > 1300) && (d.BYear <= 1400) && (d.Gender == "Female")});
+    femaleBirthArray[2] = data.filter(function(d){return (d.BYear > 1400) && (d.BYear <= 1500) && (d.Gender == "Female")});
+    femaleBirthArray[3] = data.filter(function(d){return (d.BYear > 1500) && (d.BYear <= 1600) && (d.Gender == "Female")});
+    femaleBirthArray[4] = data.filter(function(d){return (d.BYear > 1600) && (d.BYear <= 1700) && (d.Gender == "Female")});
+    femaleBirthArray[5] = data.filter(function(d){return (d.BYear > 1700) && (d.BYear <= 1800) && (d.Gender == "Female")});
+    femaleBirthArray[6] = data.filter(function(d){return (d.BYear > 1800) && (d.BYear <= 1900) && (d.Gender == "Female")});
+    femaleBirthArray[7] = data.filter(function(d){return (d.BYear > 1900) && (d.BYear <= 2000) && (d.Gender == "Female")});
+    femaleBirthArray[8] = data.filter(function(d){return (d.BYear > 2000) && (d.Gender == "Female")});
+    
+    for(var i = 0; i < femaleBirthArray.length; i++){
+        var obj = new Object();
+        obj.century = i+13;
+        obj.births = femaleBirthArray[i].length;
+        obj.gender = "female";
+        maleBirthArray.push(obj);
+    }
+    
+    var unspecifiedBirthArray = [];
+    unspecifiedBirthArray[0] = data.filter(function(d){return (d.BYear >= 0) && (d.BYear <= 1300) && (d.Gender == "[unspecified]")});
+    unspecifiedBirthArray[1] = data.filter(function(d){return (d.BYear > 1300) && (d.BYear <= 1400) && (d.Gender == "[unspecified]")});
+    unspecifiedBirthArray[2] = data.filter(function(d){return (d.BYear > 1400) && (d.BYear <= 1500) && (d.Gender == "[unspecified]")});
+    unspecifiedBirthArray[3] = data.filter(function(d){return (d.BYear > 1500) && (d.BYear <= 1600) && (d.Gender == "[unspecified]")});
+    unspecifiedBirthArray[4] = data.filter(function(d){return (d.BYear > 1600) && (d.BYear <= 1700) && (d.Gender == "[unspecified]")});
+    unspecifiedBirthArray[5] = data.filter(function(d){return (d.BYear > 1700) && (d.BYear <= 1800) && (d.Gender == "[unspecified]")});
+    unspecifiedBirthArray[6] = data.filter(function(d){return (d.BYear > 1800) && (d.BYear <= 1900) && (d.Gender == "[unspecified]")});
+    unspecifiedBirthArray[7] = data.filter(function(d){return (d.BYear > 1900) && (d.BYear <= 2000) && (d.Gender == "[unspecified]")});
+    unspecifiedBirthArray[8] = data.filter(function(d){return (d.BYear > 2000) && (d.Gender == "[unspecified]")});
+    
+    for(var i = 0; i < unspecifiedBirthArray.length; i++){
+        var obj = new Object();
+        obj.century = i+13;
+        obj.births = unspecifiedBirthArray[i].length;
+        obj.gender = "unspecified";
+        maleBirthArray.push(obj);
+    }
+    
+    
+    var maleCircles = g.selectAll("circle")
+    .data(maleBirthArray)
+    .enter()
+    .append("circle");
+    maleCircles.attr("r", 5)
+    .attr("fill", function(d){
+        if(d.gender == "male"){
+            return "blue";
+        }
+        if(d.gender == "female"){
+            return "deeppink";
+        }
+        return "slategray";
+    });
+        //setup x axis
+    var xExtent = d3.extent(maleBirthArray,function(d){return d.century});
+    var xRange = xExtent[1]-xExtent[0];
+    scaleX.domain([xExtent[0] - (xRange * paddingPercentage), xExtent[1] + (xRange * paddingPercentage)]);
+    xAxisG.call(xAxis);
+    
+    //setup y axis
+    var yExtent = d3.extent(maleBirthArray, function(d){return d.births});
     var yRange = yExtent[1]-yExtent[0];
     scaleY.domain([yExtent[0] - (yRange * paddingPercentage), yExtent[1] + (yRange * paddingPercentage)]);
     yAxisG.call(yAxis);
     
-    circles.transition().duration(2000).attr("cy", function(d) {return scaleY(d[yColumnName])});
+    maleCircles.attr("cx", function(d) {return scaleX(d.century)});
+    maleCircles.transition().duration(2000).attr("cy", function(d) {return scaleY(d.births)});
+    
 }
 
 function transitionYAxisTitle(totalDuration){
@@ -454,6 +552,7 @@ function convert(d){
     d.Sports = +d.Sports;
     d.BusinessIndustryTravel= +d.BusinessIndustryTravel;
     d.BLocLabel = d.BLocLabel;
+    d.Gender = d.Gender;
     return d;
 }
 
