@@ -16,7 +16,7 @@ more than a few modifications have been made to improve the quality of the data 
 trend among cities. Additionally, the colors were changed to better highlight individual paths between nodes.
 
 Data Visualization #3:  
-Our third data visualization is a new plot of male birth versus female birth over time. The plot helps to demonstrate cultural trends over 
+Our third data visualization is a new plot of male birth versus female birth over time. The plot helps to demonstrate cultural trends and 
 to observe potential gender biases. The X-axis shows the progression of time while the Y-axis shows the number of people born in a given 
 century. Color denotes whether a line represents male births, female births, or unspecified births. Unspecified births were kept in the 
 plot to show the potential for data bias and the presence of an unpredictable variable, which makes up roughly 5-10% of the total data. 
