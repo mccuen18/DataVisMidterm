@@ -217,7 +217,7 @@ function renderDeathShareVTime(){
     yColumnName = "attendance";
     
     currentXTitle = "Century";
-    currentYTitle = "Death Share";
+    currentYTitle = "Death Count";
     
     data = data.filter(function(d){return (d.DYear >= 0)&&(d.DLocLabel == "Florence" ||
                                                           d.DLocLabel == "Rome" ||
@@ -341,11 +341,30 @@ function renderDeathShareVTime(){
     scaleY.domain([yExtent[0] - (yRange * paddingPercentage), yExtent[1] + (yRange * paddingPercentage)]);
     yAxisG.call(yAxis);
     
+
+    
     transitionGlobalTitle(2000);
     transitionYAxisTitle(2000);
     
     circles.attr("cx", function(d) {return scaleX(d[xColumnName])});
     circles.transition().duration(2000).attr("cy", function(d) {return scaleY(d[yColumnName])});
+    
+    /*
+    data = totalDeaths.values;
+    // begin of drawing lines
+var line = d3.svg.line()
+    .x(function(d){return x(d[0]);})
+    .y(function(d){return y(d[1]);})
+    .interpolate("linear");  
+
+g.append("path")
+    .attr("d", function(d) { return line(data)})
+    .attr("transform", "translate(0,0)")
+    .style("stroke-width", 2)
+        .style("stroke", "steelblue")
+        .style("fill", "none");
+// end of drawing lines
+*/
 }
 
 function renderER(){
