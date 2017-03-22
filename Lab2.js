@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-//Author: Cam McCuen
-var margin = {left: 150, right:160, top:50, bottom:100};
-=======
 //Authors: Cam McCuen, Clinton Yoos, Parth Thaker
-var margin = {left: 150, right:100, top:50, bottom:100};
->>>>>>> origin/master
+var margin = {left: 150, right:160, top:50, bottom:100};
 var outerWidth = 1200;
 var outerHeight = 900;
 var innerWidth = outerWidth -margin.left -margin.right;
@@ -216,6 +211,7 @@ function renderLatLong(){
     circles.transition().duration(2000).attr("cy", function(d) {return scaleY(d.lat)});
 }
 function renderDeathShareVTime(){
+    d3.selectAll("circle").remove();
     var data = teamData;
     xColumnName = "BLocLong";
     yColumnName = "attendance";
@@ -268,7 +264,33 @@ function renderDeathShareVTime(){
     groupRect.append("rect")
         .attr("width", barWidth)
         .attr("height", 20)
-        .attr("fill","lightblue");
+        .attr("fill",function(d){
+        if(d == "Florence"){
+            return "plum";
+        }else if(d == "Rome"){
+            return "dodgerblue";
+        }else if(d == "Paris"){
+            return "red";
+        }else if(d == "Los Angeles"){
+            return "chartreuse";
+        }else if(d == "New York City" ){
+            return "fuchsia";
+        }else if(d == "London"){
+            return "gold";
+        }else if(d == "Moscow"){
+            return "darkorange";
+        }else if(d == "Berlin"){
+            return "cyan";
+        }else if(d == "Munich"){
+            return "forestgreen";
+        }else if(d == "Vienna"){
+            return "silver";
+        }else if(d == "Amsterdam"){
+            return "sienna";
+        }else if(d == "Nuremberg"){
+            return "tomato";
+        }
+    });
     groupRect.append("title")
         .text(function(d){return d});
     groupRect.append("text")
@@ -320,7 +342,7 @@ function renderDeathShareVTime(){
     circles.attr("r", 5)
     .attr("fill", function(d){
         if(d.DLocLabel == "Florence"){
-            return "black";
+            return "plum";
         }else if(d.DLocLabel == "Rome"){
             return "dodgerblue";
         }else if(d.DLocLabel == "Paris"){
@@ -338,7 +360,7 @@ function renderDeathShareVTime(){
         }else if(d.DLocLabel == "Munich"){
             return "forestgreen";
         }else if(d.DLocLabel == "Vienna"){
-            return "indigo";
+            return "silver";
         }else if(d.DLocLabel == "Amsterdam"){
             return "sienna";
         }else if(d.DLocLabel == "Nuremberg"){
@@ -391,9 +413,11 @@ g.append("path")
 }
 
 function renderBirthAmountVTime(){
+    groupRects.selectAll("g").remove();
+    d3.selectAll("circle").remove();
     var data = teamData;
     yColumnName = "ER";
-    currentYTitle = "# of Births";
+    currentYTitle = "Birth Count";
     currentXTitle = "Century";
 
     transitionGlobalTitle(2000);
