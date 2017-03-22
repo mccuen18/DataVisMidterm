@@ -75,7 +75,7 @@ var circles;
 
 var barWidth = 50;
 var barHeight = 50;
-var teamRects = g.append("g")
+var groupRects = g.append("g")
         .attr("transform", "translate("+(innerWidth+50)+","+(-50)+")");
 
 function dataReady(data){
@@ -85,7 +85,7 @@ function dataReady(data){
     console.log(data);
     /*
     //setup team rectangles
-    var teamRect = teamRects.selectAll("g")
+    var groupRect = groupRects.selectAll("g")
         .data(d3.map(data,function(d){return d.teamID;}).keys())
         .enter().append("g")
         .attr("transform",function(d,i){return "translate(0,"+i*barHeight/2+")"})
@@ -93,13 +93,13 @@ function dataReady(data){
         .on('mouseover', mouseEnterFunc)
         .on('mouseout', mouseExitFunc);
     
-    teamRect.append("rect")
+    groupRect.append("rect")
         .attr("width", barWidth)
         .attr("height", 20)
         .attr("fill","lightblue");
-    teamRect.append("title")
+    groupRect.append("title")
         .text(function(d){return d});
-    teamRect.append("text")
+    groupRect.append("text")
         .text(function(d){return d})
         .attr("transform","translate(10,15)");
     
@@ -218,7 +218,7 @@ function renderDeathShareVTime(){
     
     currentXTitle = "Century";
     currentYTitle = "Death Share";
-    /*
+    
     data = data.filter(function(d){return (d.DYear >= 0)&&(d.DLocLabel == "Florence" ||
                                                           d.DLocLabel == "Rome" ||
                                                           d.DLocLabel == "Paris" ||
@@ -233,28 +233,10 @@ function renderDeathShareVTime(){
                                                           d.DLocLabel == "Nuremberg"
                                                          );}
                       );
-    */
-    /*
-        data = data.filter(function(d){return (d.DLocLabel == "Florence" ||
-                                                          d.DLocLabel == "Rome" ||
-                                                          d.DLocLabel == "Paris" ||
-                                                          d.DLocLabel == "Los Angeles" ||
-                                                          d.DLocLabel == "New York City" ||
-                                                          d.DLocLabel == "London" ||
-                                                          d.DLocLabel == "Moscow" ||
-                                                          d.DLocLabel == "Berlin" ||
-                                                          d.DLocLabel == "Munich" ||
-                                                          d.DLocLabel == "Vienna" ||
-                                                          d.DLocLabel == "Amsterdam" ||
-                                                          d.DLocLabel == "Nuremberg"
-                                                         );}
-                      );
     
-    */
     var totalDeaths = d3.nest()
     .key(function(d){return d.DLocLabel;})
     .rollup(function(v){ return {
-        count: v.length,
        13: d3.sum(v, function(d){return (d.DYear >= 0 && d.DYear <= 1300)}),
         14: d3.sum(v, function(d){return (d.DYear > 1300 && d.DYear <= 1400)}),
         15: d3.sum(v, function(d){return (d.DYear > 1400 && d.DYear <= 1500)}),
@@ -267,47 +249,102 @@ function renderDeathShareVTime(){
         
     }; })
     .entries(data);
+   
+    var flatDeaths = [];
+    console.log(totalDeaths[0].values);
+    /*
+    for(var i = 0; i < 12; i++){
+        flatDeaths.push(
+        {
+            Location: totalDeaths[i].key
+        }
+        
+        );
+        for(var j=13; j < 22;j++){
+            //console.log(totalDeaths[i].values[j]);
+            var tempVal = totalDeaths[i].values[j];
+            flatDeaths[i][j]=tempVal;
+        }
+    }
     
-    console.log(totalDeaths);
+    */
     
+    for(var i = 0; i < 12; i++){
+
+        for(var j=13; j < 22;j++){
+            //console.log(totalDeaths[i].values[j]);
+            
+            var tempVal = totalDeaths[i].values[j];
+                    flatDeaths.push(
+        {
+            DLocLabel: totalDeaths[i].key,
+            Century: j,
+            DeathCount: tempVal
+        }
+        
+        );
+            
+        }
+    }
+    console.log(flatDeaths);
     
-    var LocationToDeaths = {
-        "Florence": 0,
-        "Rome": 0,
-        "Paris": 0,
-        "Los Angeles": 0,
-        "New York City": 0,
-        "London": 0,
-        "Moscow": 0,
-        "Berlin": 0,
-        "Munich": 0,
-        "Vienna": 0,
-        "Amsterdam": 0,
-        "Nuremberg": 0
-    };
-    var LocationToDeaths = {
-        "Florence": {"13": 0, "14": 0, "15": 0, "16": 0, "17": 0, "18": 0, "19": 0, "20": 0, "21":0},
-        "Rome": {"13": 0, "14": 0, "15": 0, "16": 0, "17": 0, "18": 0, "19": 0, "20": 0, "21":0},
-        "Paris": {"13": 0, "14": 0, "15": 0, "16": 0, "17": 0, "18": 0, "19": 0, "20": 0, "21":0},
-        "Los Angeles": {"13": 0, "14": 0, "15": 0, "16": 0, "17": 0, "18": 0, "19": 0, "20": 0, "21":0},
-        "New York City": {"13": 0, "14": 0, "15": 0, "16": 0, "17": 0, "18": 0, "19": 0, "20": 0, "21":0},
-        "London": {"13": 0, "14": 0, "15": 0, "16": 0, "17": 0, "18": 0, "19": 0, "20": 0, "21":0},
-        "Moscow": {"13": 0, "14": 0, "15": 0, "16": 0, "17": 0, "18": 0, "19": 0, "20": 0, "21":0},
-        "Berlin": {"13": 0, "14": 0, "15": 0, "16": 0, "17": 0, "18": 0, "19": 0, "20": 0, "21":0},
-        "Munich": {"13": 0, "14": 0, "15": 0, "16": 0, "17": 0, "18": 0, "19": 0, "20": 0, "21":0},
-        "Vienna": {"13": 0, "14": 0, "15": 0, "16": 0, "17": 0, "18": 0, "19": 0, "20": 0, "21":0},
-        "Amsterdam": {"13": 0, "14": 0, "15": 0, "16": 0, "17": 0, "18": 0, "19": 0, "20": 0, "21":0},
-        "Nuremberg": {"13": 0, "14": 0, "15": 0, "16": 0, "17": 0, "18": 0, "19": 0, "20": 0, "21":0}
-    };
-    console.log(LocationToDeaths);
+    data = flatDeaths;
     
+    circles = g.selectAll("circle")
+    .data(data)
+    .enter()
+    .append("circle");
+    circles.attr("r", 5)
+    .attr("fill", function(d){
+        if(d.DLocLabel == "Florence"){
+            return "black";
+        }else if(d.DLocLabel == "Rome"){
+            return "dodgerblue";
+        }else if(d.DLocLabel == "Paris"){
+            return "red";
+        }else if(d.DLocLabel == "Los Angeles"){
+            return "chartreuse";
+        }else if(d.DLocLabel == "New York City" ){
+            return "fuchsia";
+        }else if(d.DLocLabel == "London"){
+            return "gold";
+        }else if(d.DLocLabel == "Moscow"){
+            return "darkorange";
+        }else if(d.DLocLabel == "Berlin"){
+            return "cyan";
+        }else if(d.DLocLabel == "Munich"){
+            return "forestgreen";
+        }else if(d.DLocLabel == "Vienna"){
+            return "indigo";
+        }else if(d.DLocLabel == "Amsterdam"){
+            return "sienna";
+        }else if(d.DLocLabel == "Nuremberg"){
+            return "tomato";
+        }
+    })    
+    .attr("class", function(d){return d.DLocLabel})
+        .on('mouseover', mouseEnterFunc)
+        .on('mouseout', mouseExitFunc);
     
+    xColumnName = "Century";
+    yColumnName = "DeathCount";
+    
+    //setup x axis
+    var xExtent = d3.extent(data,function(d){return d[xColumnName]});
+    var xRange = xExtent[1]-xExtent[0];
+    scaleX.domain([xExtent[0] - (xRange * paddingPercentage), xExtent[1] + (xRange * paddingPercentage)]);
+    xAxisG.call(xAxis);
+    
+    //setup y axis
+    var yExtent = d3.extent(data, function(d){return d[yColumnName]});
+    var yRange = yExtent[1]-yExtent[0];
+    scaleY.domain([yExtent[0] - (yRange * paddingPercentage), yExtent[1] + (yRange * paddingPercentage)]);
+    yAxisG.call(yAxis);
     
     transitionGlobalTitle(2000);
     transitionYAxisTitle(2000);
     
-    //setupXYAxes(data);
-    
+    circles.attr("cx", function(d) {return scaleX(d[xColumnName])});
     circles.transition().duration(2000).attr("cy", function(d) {return scaleY(d[yColumnName])});
 }
 
@@ -356,19 +393,6 @@ function transitionGlobalTitle(totalDuration){
         .duration(totalDuration/2)
         .text(getGlobalTitle)
         .style("font-size","18px");
-}
-function setupXYAxes(data){
-    //setup x axis
-    var xExtent = d3.extent(data,function(d){return d[xColumnName]});
-    var xRange = xExtent[1]-xExtent[0];
-    scaleX.domain([xExtent[0] - (xRange * paddingPercentage), xExtent[1] + (xRange * paddingPercentage)]);
-    xAxisG.call(xAxis);
-    
-    //setup y axis
-    var yExtent = d3.extent(data, function(d){return d[yColumnName]});
-    var yRange = yExtent[1]-yExtent[0];
-    scaleY.domain([yExtent[0] - (yRange * paddingPercentage), yExtent[1] + (yRange * paddingPercentage)]);
-    yAxisG.call(yAxis);
 }
 
 
