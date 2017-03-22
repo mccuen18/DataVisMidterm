@@ -116,35 +116,8 @@ function dataReady(data){
 
 function renderLatLong(){
     var data = teamData;
-    //create circles for datapoints
-    circles = g.selectAll("circle")
-    .data(data)
-    .enter()
-    .append("circle");
-    
-    //add stlye
-    circles.attr("r", 2)
-    .attr("fill", function(d){
-    if(d.WSWin == "Y"){
-        return "red";
-    }else{
-        return "blue";
-    }})    
-    .attr("class", function(d){return d.teamID})
-    .attr("stroke", "black");
-    
-    //add title so hovering shows teamID
-    circles.append("svg:title")
-        .style("text-anchor", "middle")
-        .text(function(d){return d.teamID});
-    
-    //add mouseOver functionality
-    circles.on('mouseover', mouseEnterFunc)
-        .on('mouseout', mouseExitFunc);
-    
-    
-    xColumnName = "BLocLong";
-    yColumnName = "BLocLat";
+    xColumnName = "lon";
+    yColumnName = "lat";
     
     currentXTitle = "Longitude";
     currentYTitle = "Latitude";
@@ -153,10 +126,90 @@ function renderLatLong(){
     transitionXAxisTitle(2000);
     transitionYAxisTitle(2000);
     
-    setupXYAxes(data);
+    var locationMap = {};
+    for(var i = 0; i < data.length; i++){;
+        if(!(data[i].BLocLabel in locationMap)){
+            var loc = data.filter(function(d){
+                return d.BLocLabel == data[i].BLocLabel});
+            arrayOfSums = [];
+            var performingArtsSum = loc.reduce(function(sum,d){return sum + d.PerformingArts;},0);
+            arrayOfSums["PerformingArts"] = performingArtsSum;
+            
+            var creativeSum = loc.reduce(function(sum,d){return sum + d.Creative;},0);
+            arrayOfSums["Creative"] = creativeSum;
+            
+            var govLawMilActRelSum = loc.reduce(function(sum,d){return sum + d.GovLawMilActRel;},0);
+            arrayOfSums["GovLawMilActRel"] = govLawMilActRelSum;
+            
+            var academicEduHealthSum = loc.reduce(function(sum,d){return sum + d.AcademicEduHealth;},0);
+            arrayOfSums["AcademicEduHealth"] = academicEduHealthSum;
+            
+            var sportsSum = loc.reduce(function(sum,d){return sum + d.Sports;},0);
+            arrayOfSums["Sports"] = sportsSum;
+            
+            var businessIndustryTravelSum = loc.reduce(function(sum,d){return sum + d.BusinessIndustryTravel;},0);
+            arrayOfSums["BusinessIndustryTravel"] = businessIndustryTravelSum;
+            
+            var max = d3.entries(arrayOfSums).sort(function(a,b){ return d3.descending(a.value, b.value);})[0];
+            var locData = [data[i].BLocLat,data[i].BLocLong, max.key, max.value];
+            locationMap[data[i].BLocLabel] = locData;
+            //console.log(locData);
+        }
+   
+   
+    }
+    var keys = Object.keys(locationMap);
+    var keys2 = [,];
+    for(var i = 0; i < keys.length; i++){
+        var locArray = [keys[i]];
+        var obj = new Object();
+        obj.lat = parseFloat(locationMap[keys[i]][0]);
+        obj.lon = parseFloat(locationMap[keys[i]][1]);
+        obj.prof = locationMap[keys[i]][2];
+        obj.max = locationMap[keys[i]][3];
+        keys2[i] = obj;
+    }
+    console.log(keys2[0]);
+    var circles = g.selectAll("circle")
+    .data(keys2)
+    .enter()
+    .append("circle");
+    circles.attr("r", 2)
+    .attr("fill", function(d){
+        if(d.max == 0){
+            return "black";
+        }else if(d.prof == "PerformingArts"){
+            return "dodgerblue";
+        }else if(d.prof == "Creative"){
+            return "red";
+        }else if(d.prof == "GovLawMilActRel"){
+            return "chartreuse";
+        }else if(d.prof == "AcademicEduHealth"){
+            return "fuchsia";
+        }else if(d.prof == "Sports"){
+            return "gold";
+        }else if(d.prof == "BusinessIndustryTravel"){
+            return "darkorange";
+        }else{
+            return "black";
+        }
+    })    
+    .attr("class", function(d){return d.teamID});
     
-    circles.attr("cx", function(d) {return scaleX(d[xColumnName])});
-    circles.transition().duration(2000).attr("cy", function(d) {return scaleY(d[yColumnName])});
+        //setup x axis
+    var xExtent = d3.extent(keys2,function(d){return d.lon});
+    var xRange = xExtent[1]-xExtent[0];
+    scaleX.domain([xExtent[0] - (xRange * paddingPercentage), xExtent[1] + (xRange * paddingPercentage)]);
+    xAxisG.call(xAxis);
+    
+    //setup y axis
+    var yExtent = d3.extent(keys2, function(d){return d.lat});
+    var yRange = yExtent[1]-yExtent[0];
+    scaleY.domain([yExtent[0] - (yRange * paddingPercentage), yExtent[1] + (yRange * paddingPercentage)]);
+    yAxisG.call(yAxis);
+    
+    circles.attr("cx", function(d) {return scaleX(d.lon)});
+    circles.transition().duration(2000).attr("cy", function(d) {return scaleY(d.lat)});
 }
 function renderDeathShareVTime(){
     var data = teamData;
@@ -357,6 +410,7 @@ function convert(d){
     d.AcademicEduHealth = +d.AcademicEduHealth;
     d.Sports = +d.Sports;
     d.BusinessIndustryTravel= +d.BusinessIndustryTravel;
+    d.BLocLabel = d.BLocLabel;
     return d;
 }
 
