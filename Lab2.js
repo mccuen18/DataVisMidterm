@@ -115,6 +115,8 @@ function dataReady(data){
 
 
 function renderLatLong(){
+    groupRects.selectAll("g").remove();
+    d3.selectAll("circle").remove();
     var data = teamData;
     xColumnName = "lon";
     yColumnName = "lat";

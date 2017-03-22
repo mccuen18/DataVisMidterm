@@ -20,3 +20,6 @@ Our third data visualization is a new plot of male birth versus female birth ove
 to observe potential gender biases. The X-axis shows the progression of time while the Y-axis shows the number of people born in a given 
 century. Color denotes whether a line represents male births, female births, or unspecified births. Unspecified births were kept in the 
 plot to show the potential for data bias and the presence of an unpredictable variable, which makes up roughly 5-10% of the total data. 
+
+
+Note: Visualization 1 takes a long time to load, so a picture has been incldued to show you it will (eventually) work.
