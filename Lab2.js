@@ -44,7 +44,7 @@ var xAxisG = g.append("g")
 var yAxisG = g.append("g");
 
 var scaleX = d3.scale.linear();
-var scaleY = d3.scale.linear();
+var scaleY = d3.scale.log();
 
 scaleX.range([0,innerWidth]);
 scaleY.range([innerHeight,0]);
@@ -52,11 +52,8 @@ scaleY.range([innerHeight,0]);
 var xAxis = d3.svg.axis().scale(scaleX).orient("bottom")
 .tickFormat(d3.format("d"))
 .ticks(16);
-var yAxis = d3.svg.axis().scale(scaleY).orient("left");
-
-
-//xAxisG.call(xAxis);
-//yAxisG.call(yAxis);
+var yAxis = d3.svg.axis().scale(scaleY).orient("left")
+.ticks(20, ",.1s");
 
 xAxisG.append("text")
 .style("text-anchor","middle")
@@ -115,6 +112,17 @@ function dataReady(data){
 
 
 function renderLatLong(){
+    var scaleX = d3.scale.linear();
+var scaleY = d3.scale.linear();
+
+scaleX.range([0,innerWidth]);
+scaleY.range([innerHeight,0]);
+
+var xAxis = d3.svg.axis().scale(scaleX).orient("bottom")
+.tickFormat(d3.format("d"))
+.ticks(16);
+var yAxis = d3.svg.axis().scale(scaleY).orient("left");
+    
     groupRects.selectAll("g").remove();
     d3.selectAll("circle").remove();
     var data = teamData;
@@ -213,7 +221,20 @@ function renderLatLong(){
     circles.transition().duration(2000).attr("cy", function(d) {return scaleY(d.lat)});
 }
 function renderDeathShareVTime(){
+        var scaleX = d3.scale.linear();
+var scaleY = d3.scale.log();
+
+scaleX.range([0,innerWidth]);
+scaleY.range([innerHeight,0]);
+
+var xAxis = d3.svg.axis().scale(scaleX).orient("bottom")
+.tickFormat(d3.format("d"))
+.ticks(16);
+var yAxis = d3.svg.axis().scale(scaleY).orient("left")
+.ticks(20, ",.1s");
+    
     d3.selectAll("circle").remove();
+
     var data = teamData;
     xColumnName = "BLocLong";
     yColumnName = "attendance";
@@ -251,7 +272,7 @@ function renderDeathShareVTime(){
         
     }; })
     .entries(data);
-   
+   console.log(totalDeaths);
     
     data = totalDeaths;
     
@@ -322,18 +343,22 @@ function renderDeathShareVTime(){
             //console.log(totalDeaths[i].values[j]);
             
             var tempVal = totalDeaths[i].values[j];
-                    flatDeaths.push(
-        {
-            DLocLabel: totalDeaths[i].key,
-            Century: j,
-            DeathCount: tempVal
-        }
-        
-        );
+            if(tempVal >0){
+                flatDeaths.push(
+                {
+                    DLocLabel: totalDeaths[i].key,
+                    Century: j,
+                    DeathCount: tempVal
+                });
+            }
             
         }
     }
-    console.log(flatDeaths);
+    //console.log(flatDeaths);
+    var flatDeathsNoZero = [];
+    for(var i =0;i< (22-13)*12;i++){
+        
+    }
     
     data = flatDeaths;
     
@@ -385,7 +410,7 @@ function renderDeathShareVTime(){
     //setup y axis
     var yExtent = d3.extent(data, function(d){return d[yColumnName]});
     var yRange = yExtent[1]-yExtent[0];
-    scaleY.domain([yExtent[0] - (yRange * paddingPercentage), yExtent[1] + (yRange * paddingPercentage)]);
+    scaleY.domain([1, yExtent[1] + (yRange * paddingPercentage)]).nice();
     yAxisG.call(yAxis);
     
 
@@ -399,6 +424,7 @@ function renderDeathShareVTime(){
     
     
     data = totalDeaths.values;
+    /*
     // begin of drawing lines
 var line = d3.svg.line()
     .x(function(d){console.log(d[0]);return scaleX(d[0]);})
@@ -411,10 +437,22 @@ g.append("path")
         .style("stroke", "steelblue")
         .style("fill", "none");
 // end of drawing lines
+*/
 
 }
 
 function renderBirthAmountVTime(){
+        var scaleX = d3.scale.linear();
+var scaleY = d3.scale.linear();
+
+scaleX.range([0,innerWidth]);
+scaleY.range([innerHeight,0]);
+
+var xAxis = d3.svg.axis().scale(scaleX).orient("bottom")
+.tickFormat(d3.format("d"))
+.ticks(16);
+var yAxis = d3.svg.axis().scale(scaleY).orient("left");
+    
     groupRects.selectAll("g").remove();
     d3.selectAll("circle").remove();
     var data = teamData;
