@@ -55,10 +55,6 @@ var xAxis = d3.svg.axis().scale(scaleX).orient("bottom")
 var yAxis = d3.svg.axis().scale(scaleY).orient("left")
 .ticks(20, ",.1s");
 
-
-//xAxisG.call(xAxis);
-//yAxisG.call(yAxis);
-
 xAxisG.append("text")
 .style("text-anchor","middle")
 .text(currentXTitle)
@@ -116,6 +112,17 @@ function dataReady(data){
 
 
 function renderLatLong(){
+    var scaleX = d3.scale.linear();
+var scaleY = d3.scale.linear();
+
+scaleX.range([0,innerWidth]);
+scaleY.range([innerHeight,0]);
+
+var xAxis = d3.svg.axis().scale(scaleX).orient("bottom")
+.tickFormat(d3.format("d"))
+.ticks(16);
+var yAxis = d3.svg.axis().scale(scaleY).orient("left");
+    
     groupRects.selectAll("g").remove();
     d3.selectAll("circle").remove();
     var data = teamData;
@@ -214,6 +221,18 @@ function renderLatLong(){
     circles.transition().duration(2000).attr("cy", function(d) {return scaleY(d.lat)});
 }
 function renderDeathShareVTime(){
+        var scaleX = d3.scale.linear();
+var scaleY = d3.scale.log();
+
+scaleX.range([0,innerWidth]);
+scaleY.range([innerHeight,0]);
+
+var xAxis = d3.svg.axis().scale(scaleX).orient("bottom")
+.tickFormat(d3.format("d"))
+.ticks(16);
+var yAxis = d3.svg.axis().scale(scaleY).orient("left")
+.ticks(20, ",.1s");
+    
     d3.selectAll("circle").remove();
 
     var data = teamData;
@@ -423,6 +442,17 @@ g.append("path")
 }
 
 function renderBirthAmountVTime(){
+        var scaleX = d3.scale.linear();
+var scaleY = d3.scale.linear();
+
+scaleX.range([0,innerWidth]);
+scaleY.range([innerHeight,0]);
+
+var xAxis = d3.svg.axis().scale(scaleX).orient("bottom")
+.tickFormat(d3.format("d"))
+.ticks(16);
+var yAxis = d3.svg.axis().scale(scaleY).orient("left");
+    
     groupRects.selectAll("g").remove();
     d3.selectAll("circle").remove();
     var data = teamData;
