@@ -194,7 +194,7 @@ var yAxis = d3.svg.axis().scale(scaleY).orient("left");
         }else if(d.prof == "GovLawMilActRel"){
             return "chartreuse";
         }else if(d.prof == "AcademicEduHealth"){
-            return "fuchsia";
+            return "purple";
         }else if(d.prof == "Sports"){
             return "gold";
         }else if(d.prof == "BusinessIndustryTravel"){
@@ -289,7 +289,7 @@ var yAxis = d3.svg.axis().scale(scaleY).orient("left")
         .attr("height", 20)
         .attr("fill",function(d){
         if(d == "Florence"){
-            return "plum";
+            return "magenta";
         }else if(d == "Rome"){
             return "dodgerblue";
         }else if(d == "Paris"){
@@ -297,7 +297,7 @@ var yAxis = d3.svg.axis().scale(scaleY).orient("left")
         }else if(d == "Los Angeles"){
             return "chartreuse";
         }else if(d == "New York City" ){
-            return "fuchsia";
+            return "purple";
         }else if(d == "London"){
             return "gold";
         }else if(d == "Moscow"){
@@ -307,7 +307,7 @@ var yAxis = d3.svg.axis().scale(scaleY).orient("left")
         }else if(d == "Munich"){
             return "forestgreen";
         }else if(d == "Vienna"){
-            return "silver";
+            return "teal";
         }else if(d == "Amsterdam"){
             return "sienna";
         }else if(d == "Nuremberg"){
@@ -369,7 +369,7 @@ var yAxis = d3.svg.axis().scale(scaleY).orient("left")
     circles.attr("r", 5)
     .attr("fill", function(d){
         if(d.DLocLabel == "Florence"){
-            return "plum";
+            return "magenta";
         }else if(d.DLocLabel == "Rome"){
             return "dodgerblue";
         }else if(d.DLocLabel == "Paris"){
@@ -377,7 +377,7 @@ var yAxis = d3.svg.axis().scale(scaleY).orient("left")
         }else if(d.DLocLabel == "Los Angeles"){
             return "chartreuse";
         }else if(d.DLocLabel == "New York City" ){
-            return "fuchsia";
+            return "purple";
         }else if(d.DLocLabel == "London"){
             return "gold";
         }else if(d.DLocLabel == "Moscow"){
@@ -387,7 +387,7 @@ var yAxis = d3.svg.axis().scale(scaleY).orient("left")
         }else if(d.DLocLabel == "Munich"){
             return "forestgreen";
         }else if(d.DLocLabel == "Vienna"){
-            return "silver";
+            return "teal";
         }else if(d.DLocLabel == "Amsterdam"){
             return "sienna";
         }else if(d.DLocLabel == "Nuremberg"){
