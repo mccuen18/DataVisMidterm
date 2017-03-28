@@ -592,8 +592,7 @@ function transitionGlobalTitle(totalDuration){
 function mouseEnterFunc(){
     var team = d3.select(this).attr("class");
     
-    d3.selectAll("circle").filter("."+team)
-        .attr("r",10);
+    //d3.selectAll("circle").filter("."+team).attr("r",10);
 
     d3.selectAll("circle").transition()
         .style("opacity", function(){
@@ -603,12 +602,21 @@ function mouseEnterFunc(){
             return .3;
         }
     })
+    .attr("r", function(){
+        if(d3.select(this).attr("class") == team){
+            return 10;
+        }else{
+            return 5;
+        }
+    })
+    ;
     selectedGroup = d3.select(this).attr("class");
     debugOut(getGlobalTitle);
 }
 function mouseExitFunc(){
     var team = d3.select(this).attr("class");
-    d3.selectAll("."+team).attr("r", 5);
+    //d3.selectAll("."+team).attr("r", 5);
+    d3.selectAll("circle").attr("r", 5);
     d3.selectAll("circle").transition().style("opacity", 1);
     selectedGroup = "All";
     debugOut(getGlobalTitle);
